@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function Auth() {
+	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [isLoginUI, setIsLoginUI] = useState(false);
+	useEffect(() => {
+		const param = searchParams.get("action");
+		if (param === "LOGIN") {
+			setIsLoginUI(true);
+		}
+	}, [searchParams]);
 
 	const [loginInputs, setLoginInputs] = useState({
 		email: "",
@@ -30,13 +39,27 @@ function Auth() {
 		}));
 	};
 
-	const handleLogin = (e) => {
-		e.preventDefault();
+	const handleLogin = async (e) => {
+		try {
+			e.preventDefault();
+			const { email, password } = loginInputs;
+			const result = await axios.post("http://localhost:2100/api/v1/login", {
+				email,
+				password,
+			});
+
+			if (!result) return alert("Record doesn't exist");
+			alert("Login Successful");
+			navigate("/header");
+		} catch (err) {
+			alert("Incorrect 'email' or 'password' ");
+			console.error(err.message);
+		}
 	};
 	const handleRegister = async (e) => {
 		try {
-			const { name, email, password } = registerInputs;
 			e.preventDefault();
+			const { name, email, password } = registerInputs;
 			const result = await axios.post("http://localhost:2100/api/v1/register", {
 				name,
 				email,
@@ -45,7 +68,8 @@ function Auth() {
 			if (!result) return alert("Unable to register");
 			alert("Register Successful");
 		} catch (err) {
-			alert("User already exist");
+			alert("An error occurred");
+			console.log(err.message);
 		}
 	};
 	const registerUI = () => {
@@ -152,7 +176,13 @@ function Auth() {
 				</form>
 				<div className="d-flex mx-auto align-items-center mb-4">
 					Create an account{" "}
-					<button className="btn btn-link" onClick={() => setIsLoginUI(false)}>
+					<button
+						className="btn btn-link"
+						onClick={() => {
+							setIsLoginUI(false);
+							setSearchParams({ action: "REGISTER" });
+						}}
+					>
 						Register
 					</button>
 				</div>

@@ -24,7 +24,7 @@ function Navbar() {
 					className="collapse navbar-collapse d-flex justify-content-end"
 					id="navbarSupportedContent"
 				>
-					<Link to="/auth" className="btn btn-light" type="submit">
+					<Link to="/auth?action=LOGIN" className="btn btn-light" type="submit">
 						Log in
 					</Link>
 				</div>

@@ -5,6 +5,7 @@ import Home from "./components/home/Home";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
+import Header from "./components/ListHeader/Header";
 
 const CombinedComponents = () => {
 	return (
@@ -25,6 +26,7 @@ function App() {
 					<Routes>
 						<Route exact path="/" element={<CombinedComponents />} />
 						<Route exact path="/auth" element={<CombinedComponents />} />
+						<Route exact path="/header" element={<Header />} />
 						<Route exact path="/error" element={<ErrorPage />} />
 					</Routes>
 				</div>
