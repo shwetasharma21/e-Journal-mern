@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Auth() {
 	const navigate = useNavigate();
@@ -49,11 +50,10 @@ function Auth() {
 			});
 
 			if (!result) return alert("Record doesn't exist");
-			alert("Login Successful");
+			toast.success("Login Successful");
 			navigate("/header");
 		} catch (err) {
-			alert("Incorrect 'email' or 'password' ");
-			console.error(err.message);
+			toast.error("Incorrect email or password");
 		}
 	};
 	const handleRegister = async (e) => {
@@ -65,11 +65,11 @@ function Auth() {
 				email,
 				password,
 			});
-			if (!result) return alert("Unable to register");
-			alert("Register Successful");
+			if (!result) return toast.error("Unable to register");
+			toast.success("Registration Successful");
+			navigate("/header");
 		} catch (err) {
-			alert("An error occurred");
-			console.log(err.message);
+			toast.error("An error occurred");
 		}
 	};
 	const registerUI = () => {
